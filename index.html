@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Finanzas — Administrador de Gastos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-contenedor">
+
+  <!-- Barr lateral -->
+  <aside class="barra-lateral">
+    <div class="marca">
+      <span class="marca-icono">◈</span>
+      <span class="marca-texto">Mis Finanzas</span>
+    </div>
+
+    <nav class="navegacion">
+      <a href="#" class="enlace-nav enlace-nav--activo">
+        <span class="enlace-nav-icono">▤</span> Resumen
+      </a>
+      <a href="#" class="enlace-nav">
+        <span class="enlace-nav-icono">↔</span> Movimientos
+      </a>
+      <a href="#" class="enlace-nav">
+        <span class="enlace-nav-icono">◔</span> Categorías
+      </a>
+      <a href="#" class="enlace-nav">
+        <span class="enlace-nav-icono">▦</span> Presupuestos
+      </a>
+      <a href="#" class="enlace-nav">
+        <span class="enlace-nav-icono">⚙</span> Ajustes
+      </a>
+    </nav>
+
+    <div class="usuario-tarjeta">
+      <div class="usuario-avatar">MG</div>
+      <div>
+        <p class="usuario-nombre">María Gómez</p>
+        <p class="usuario-correo">maria@correo.com</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="contenido-principal">
+
+    <header class="encabezado">
+      <div>
+        <p class="encabezado-eyebrow">Julio 2026</p>
+        <h1 class="encabezado-titulo">Resumen del mes</h1>
+      </div>
+      <button class="boton boton--primario" id="boton-nuevo-gasto">+ Nuevo gasto</button>
+    </header>
+
+    <!-- Tarjetas de saldo -->
+    <section class="tarjetas-resumen" id="seccion-resumen">
+      <article class="tarjeta tarjeta--saldo">
+        <p class="tarjeta-etiqueta">Saldo disponible</p>
+        <p class="tarjeta-monto">$ 2.450.000</p>
+        <p class="tarjeta-detalle">Actualizado hoy</p>
+      </article>
+
+      <article class="tarjeta tarjeta--ingresos">
+        <p class="tarjeta-etiqueta">Ingresos del mes</p>
+        <p class="tarjeta-monto">$ 4.200.000</p>
+        <p class="tarjeta-detalle tarjeta-detalle--positivo">▲ 8% vs. junio</p>
+      </article>
+
+      <article class="tarjeta tarjeta--gastos">
+        <p class="tarjeta-etiqueta">Gastos del mes</p>
+        <p class="tarjeta-monto">$ 1.750.000</p>
+        <p class="tarjeta-detalle tarjeta-detalle--negativo">▲ 12% vs. junio</p>
+      </article>
+    </section>
+
+    <div class="columnas">
+
+      <!-- Formulario para registrar un gasto -->
+      <section class="panel panel--formulario" id="panel-nuevo-gasto">
+        <h2 class="panel-titulo">Registrar gasto</h2>
+        <form class="formulario-gasto" id="formulario-gasto">
+
+          <div class="campo">
+            <label for="campo-descripcion" class="etiqueta">Descripción</label>
+            <input type="text" id="campo-descripcion" name="descripcion" class="entrada" placeholder="Ej. Mercado del mes">
+          </div>
+
+          <div class="campo-fila">
+            <div class="campo">
+              <label for="campo-monto" class="etiqueta">Monto</label>
+              <input type="number" id="campo-monto" name="monto" class="entrada" placeholder="0">
+            </div>
+            <div class="campo">
+              <label for="campo-fecha" class="etiqueta">Fecha</label>
+              <input type="date" id="campo-fecha" name="fecha" class="entrada">
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="campo-categoria" class="etiqueta">Categoría</label>
+            <select id="campo-categoria" name="categoria" class="entrada">
+              <option value="hogar">Hogar</option>
+              <option value="transporte">Transporte</option>
+              <option value="alimentacion">Alimentación</option>
+              <option value="salud">Salud</option>
+              <option value="ocio">Ocio</option>
+              <option value="otros">Otros</option>
+            </select>
+          </div>
+
+          <button type="submit" class="boton boton--primario boton--ancho">Guardar gasto</button>
+        </form>
+      </section>
+
+      <!-- Listado de movimientos -->
+      <section class="panel panel--movimientos" id="panel-movimientos">
+        <div class="panel-encabezado">
+          <h2 class="panel-titulo">Últimos movimientos</h2>
+          <select class="filtro-categoria" id="filtro-categoria">
+            <option value="todas">Todas las categorías</option>
+            <option value="hogar">Hogar</option>
+            <option value="transporte">Transporte</option>
+            <option value="alimentacion">Alimentación</option>
+            <option value="salud">Salud</option>
+          </select>
+        </div>
+
+        <ul class="lista-movimientos">
+          <li class="movimiento">
+            <span class="movimiento-icono movimiento-icono--hogar">⌂</span>
+            <div class="movimiento-info">
+              <p class="movimiento-descripcion">Arriendo apartamento</p>
+              <p class="movimiento-categoria">Hogar · 25 jul. 2026</p>
+            </div>
+            <span class="movimiento-monto movimiento-monto--negativo">- $ 900.000</span>
+          </li>
+
+          <li class="movimiento">
+            <span class="movimiento-icono movimiento-icono--alimentacion">☘</span>
+            <div class="movimiento-info">
+              <p class="movimiento-descripcion">Mercado quincenal</p>
+              <p class="movimiento-categoria">Alimentación · 22 jul. 2026</p>
+            </div>
+            <span class="movimiento-monto movimiento-monto--negativo">- $ 320.000</span>
+          </li>
+
+          <li class="movimiento">
+            <span class="movimiento-icono movimiento-icono--transporte">⛽</span>
+            <div class="movimiento-info">
+              <p class="movimiento-descripcion">Gasolina</p>
+              <p class="movimiento-categoria">Transporte · 20 jul. 2026</p>
+            </div>
+            <span class="movimiento-monto movimiento-monto--negativo">- $ 150.000</span>
+          </li>
+
+          <li class="movimiento">
+            <span class="movimiento-icono movimiento-icono--ingreso">↑</span>
+            <div class="movimiento-info">
+              <p class="movimiento-descripcion">Pago nómina</p>
+              <p class="movimiento-categoria">Ingreso · 15 jul. 2026</p>
+            </div>
+            <span class="movimiento-monto movimiento-monto--positivo">+ $ 4.200.000</span>
+          </li>
+
+          <li class="movimiento">
+            <span class="movimiento-icono movimiento-icono--ocio">♪</span>
+            <div class="movimiento-info">
+              <p class="movimiento-descripcion">Suscripción música</p>
+              <p class="movimiento-categoria">Ocio · 10 jul. 2026</p>
+            </div>
+            <span class="movimiento-monto movimiento-monto--negativo">- $ 25.000</span>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+</body>
+</html>
