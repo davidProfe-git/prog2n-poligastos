@@ -1,0 +1,162 @@
+/* Estilos Generales */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f4f6f8;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #1a202c;
+}
+
+/* Tarjetas de Resumen */
+.balance-cards {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.card {
+  flex: 1;
+  padding: 15px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.card p {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card.income p { color: #16a34a; }
+.card.expense p { color: #dc2626; }
+.card.total p { color: #2563eb; }
+
+/* Formulario de Registro */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+input, select, button {
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #2563eb;
+}
+
+.input-full {
+  width: 100%;
+}
+
+.input-half {
+  flex: 1;
+}
+
+button {
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Lista de Transacciones */
+.transactions-title {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #334155;
+}
+
+.transaction-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid #cbd5e1;
+}
+
+.transaction-item.income { border-left-color: #16a34a; }
+.transaction-item.expense { border-left-color: #dc2626; }
+
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-info .description {
+  font-weight: 500;
+}
+
+.transaction-info .category {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.transaction-amount {
+  font-weight: 600;
+}
+
+.amount-income { color: #16a34a; }
+.amount-expense { color: #dc2626; }
