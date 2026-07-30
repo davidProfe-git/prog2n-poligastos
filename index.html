@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Administration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>PayAdmin <span class="gold-text">Pro</span></h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">Transactions</a></li>
+                    <li><a href="#">Invoices</a></li>
+                    <li><a href="#">Customers</a></li>
+                    <li><a href="#">System Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <h1>we need to make money now</h1>
+                <div class="user-profile">
+                    <span>los de soacha </span>
+                </div>
+            </header>
+
+            <!-- Summary Cards -->
+            <section class="cards">
+                <div class="card">
+                    <h3>Total Processed</h3>
+                    <p class="gold-text">$45,230.00</p>
+                </div>
+                <div class="card">
+                    <h3>Pending Payments</h3>
+                    <p class="blue-text">$3,100.00</p>
+                </div>
+                <div class="card">
+                    <h3>Success Rate</h3>
+                    <p class="gold-text">98.5%</p>
+                </div>
+            </section>
+
+            <!-- Transactions Table -->
+            <section class="recent-transactions">
+                <h2>Recent Transactions</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Client Name</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#TX-9081</td>
+                            <td>Tech Solutions Inc.</td>
+                            <td>2026-07-28</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td>$1,500.00</td>
+                        </tr>
+                        <tr>
+                            <td>#TX-9082</td>
+                            <td>Global Retail</td>
+                            <td>2026-07-29</td>
+                            <td><span class="status pending">Pending</span></td>
+                            <td>$450.00</td>
+                        </tr>
+                        <tr>
+                            <td>#TX-9083</td>
+                            <td>Studio Design</td>
+                            <td>2026-07-29</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td>$2,100.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
