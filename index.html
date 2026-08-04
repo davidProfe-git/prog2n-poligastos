@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración de Pagos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <h2>FintechPanel</h2>
+            <nav>
+                <a href="#" class="active">📊 Resumen</a>
+                <a href="#">💳 Transacciones</a>
+                <a href="#">👥 Clientes</a>
+                <a href="#">⚙️ Configuración</a>
+            </nav>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <!-- Encabezado -->
+            <header class="header">
+                <h1>Panel de Pagos</h1>
+                <div class="user-profile">Admin</div>
+            </header>
+
+            <!-- Tarjetas de Métricas -->
+            <section class="metrics">
+                <div class="card">
+                    <h3>Ingresos Totales</h3>
+                    <p class="amount">$24,500.00</p>
+                    <span class="trend up">+12% este mes</span>
+                </div>
+                <div class="card">
+                    <h3>Pagos Pendientes</h3>
+                    <p class="amount">$3,200.00</p>
+                    <span class="trend warning">5 facturas</span>
+                </div>
+                <div class="card">
+                    <h3>Tasa de Éxito</h3>
+                    <p class="amount">98.4%</p>
+                    <span class="trend up">Optimizado</span>
+                </div>
+            </section>
+
+            <!-- Tabla de Transacciones -->
+            <section class="transactions">
+                <h2>Últimas Transacciones</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#TRX-9081</td>
+                            <td>Carlos Mendoza</td>
+                            <td>04 Ago 2026</td>
+                            <td class="total">$150.00</td>
+                            <td><span class="status success">Completado</span></td>
+                        </tr>
+                        <tr>
+                            <td>#TRX-9080</td>
+                            <td>Ana Rodríguez</td>
+                            <td>03 Ago 2026</td>
+                            <td class="total">$85.00</td>
+                            <td><span class="status pending">Pendiente</span></td>
+                        </tr>
+                        <tr>
+                            <td>#TRX-9079</td>
+                            <td>Luis Martínez</td>
+                            <td>02 Ago 2026</td>
+                            <td class="total">$320.00</td>
+                            <td><span class="status failed">Fallido</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
