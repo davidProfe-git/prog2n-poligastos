@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Gastos - Noche Estrellada</title>
+  <link rel="stylesheet" href="style-2.css">
+  <!-- Fuentes bonitas desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Fondo dinámico con partículas y remolinos -->
+  <div class="starry-background" id="starryBg">
+    <div class="swirl swirl-1"></div>
+    <div class="swirl swirl-2"></div>
+    <div class="moon"></div>
+    <div class="stars-layer"></div>
+  </div>
+
+  <!-- Contenedor Principal del Dashboard -->
+  <div class="dashboard-container">
+    
+    <!-- Encabezado -->
+    <header class="header">
+      <div class="header-title">
+        <h1>Control de Gastos</h1>
+        <p>Inspirado en la magia de La Noche Estrellada</p>
+      </div>
+      <button class="btn-primary">+ Nuevo Gasto</button>
+    </header>
+
+    <!-- Tarjetas de Resumen -->
+    <section class="summary-cards">
+      <div class="card card-accent">
+        <h3>Presupuesto Total</h3>
+        <p class="amount">$2,500,000</p>
+        <span class="badge">Mensual</span>
+      </div>
+
+      <div class="card">
+        <h3>Total Gastado</h3>
+        <p class="amount text-warning">$1,120,000</p>
+        <span class="badge badge-warning">44.8% del límite</span>
+      </div>
+
+      <div class="card">
+        <h3>Disponible</h3>
+        <p class="amount text-success">$1,380,000</p>
+        <span class="badge badge-success">Saludable</span>
+      </div>
+    </section>
+
+    <!-- Contenido Principal (Formulario + Tabla) -->
+    <main class="main-content">
+      
+      <!-- Formulario de Gastos -->
+      <section class="panel form-panel">
+        <h2>Registrar Gasto</h2>
+        <form class="expense-form" onsubmit="event.preventDefault();">
+          <div class="input-group">
+            <label for="title">Concepto</label>
+            <input type="text" id="title" placeholder="Ej: Compra de mercadería" required>
+          </div>
+
+          <div class="input-group">
+            <label for="amount">Monto ($)</label>
+            <input type="number" id="amount" placeholder="0.00" required>
+          </div>
+
+          <div class="input-group">
+            <label for="category">Categoría</label>
+            <select id="category">
+              <option value="food">Alimentación</option>
+              <option value="services">Servicios y Servicios Públicos</option>
+              <option value="leisure">Entretenimiento</option>
+              <option value="transport">Transporte</option>
+              <option value="other">Otros</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary btn-block">Añadir a la Noche</button>
+        </form>
+      </section>
+
+      <!-- Historial de Gastos -->
+      <section class="panel table-panel">
+        <h2>Últimos Movimientos</h2>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Concepto</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Luz y Energía</td>
+                <td><span class="tag tag-services">Servicios</span></td>
+                <td>08 Ago 2026</td>
+                <td class="expense-val">-$145,000</td>
+              </tr>
+              <tr>
+                <td>Mercado del mes</td>
+                <td><span class="tag tag-food">Alimentación</span></td>
+                <td>06 Ago 2026</td>
+                <td class="expense-val">-$420,000</td>
+              </tr>
+              <tr>
+                <td>Cine y Salida</td>
+                <td><span class="tag tag-leisure">Entretenimiento</span></td>
+                <td>03 Ago 2026</td>
+                <td class="expense-val">-$85,000</td>
+              </tr>
+              <tr>
+                <td>Mantenimiento Moto</td>
+                <td><span class="tag tag-transport">Transporte</span></td>
+                <td>01 Ago 2026</td>
+                <td class="expense-val">-$120,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Script para el movimiento interactivo del fondo -->
+  <script>
+    const bg = id = document.getElementById('starryBg');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 30;
+      const y = (e.clientY / window.innerHeight - 0.5) * 30;
+      
+      // Mueve suavemente el fondo según el cursor
+      bg.style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
+    });
+  </script>
+</body>
+</html>
