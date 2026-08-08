@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poligastos - Control de Gastos Personal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Poligastos 💰</h1>
+        <p>Lleva el control de tus finanzas personales</p>
+    </header>
+
+    <main class="container">
+        <!-- Formulario para agregar gastos -->
+        <section class="card">
+            <h2>Registrar Nuevo Gasto</h2>
+            <form id="form-gasto">
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <input type="text" id="descripcion" placeholder="Ej: Compra de almuerzo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="monto">Monto ($)</label>
+                    <input type="number" id="monto" placeholder="Ej: 25000" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" required>
+                        <option value="">Seleccione una categoría</option>
+                        <option value="Alimentación">Alimentación</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Servicios">Servicios Públicos</option>
+                        <option value="Entretenimiento">Entretenimiento</option>
+                        <option value="Educación">Educación</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Guardar Gasto</button>
+            </form>
+        </section>
+
+        <!-- Listado de gastos -->
+        <section class="card">
+            <h2>Historial de Gastos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Categoría</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-gastos">
+                    <tr>
+                        <td>Almuerzo ejecutivo</td>
+                        <td>Alimentación</td>
+                        <td>$45.000,00</td>
+                    </tr>
+                    <tr>
+                        <td>Pasaje de transporte</td>
+                        <td>Transporte</td>
+                        <td>$12.000,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="../backend/app.js"></script>
+</body>
+</html>
