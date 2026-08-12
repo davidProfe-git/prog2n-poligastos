@@ -1,0 +1,22 @@
+{
+  "name": "poligastos",
+  "version": "1.0.0",
+  "description": "administracion de finanzas ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidProfe-git/prog2n-poligastos.git"
+  },
+  "author": "Allan H",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidProfe-git/prog2n-poligastos/issues"
+  },
+  "homepage": "https://github.com/davidProfe-git/prog2n-poligastos#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
