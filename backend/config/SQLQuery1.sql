@@ -1,17 +1,12 @@
-use master;
-go
 
-drop database if exists poligastos;
-go
+CREATE DATABASE poligastos;
 
+USE poligastos;
 
-create database poligastos;
-use poligastos;
-
-create table usuarios (
-id_usuarios int identity(1,1) primary key not null,
-nombre varchar (100),
-email varchar (100)
+CREATE TABLE usuarios (
+    id_usuarios INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    email VARCHAR(100)
 );
 
 INSERT INTO usuarios (nombre, email)
@@ -26,16 +21,22 @@ VALUES
 ('Camila Rojas', 'camila@gmail.com'),
 ('Sebastian Castro', 'sebastian@gmail.com'),
 ('Maria Gonzalez', 'maria@gmail.com');
-GO
 
-select * from usuarios;
+SELECT * FROM usuarios;
 
-create table categorias(
-id_categorias int identity (1,1) primary key not null,
-categoria varchar (20) not null
-constraint categorias_categoria
-check (categoria in ('Alimentacion','Transporte',
-'Servicios','Ocio','Sueldo'))
+
+CREATE TABLE categorias (
+    id_categorias INT AUTO_INCREMENT PRIMARY KEY,
+    categoria VARCHAR(20) NOT NULL,
+    
+    CONSTRAINT categorias_categoria
+    CHECK (categoria IN (
+        'Alimentacion',
+        'Transporte',
+        'Servicios',
+        'Ocio',
+        'Sueldo'
+    ))
 );
 
 INSERT INTO categorias (categoria)
@@ -45,22 +46,30 @@ VALUES
 ('Servicios'),
 ('Ocio'),
 ('Sueldo');
-GO
 
-select * from categorias;
+SELECT * FROM categorias;
 
-create table movimientos(
-id_movimientos int identity (1,1) primary key not null,
-tipo varchar (15) not null
-constraint movimientos_tipo
-check (tipo in ('gasto','ingreso')),
-monto numeric (10,2),
-descripcion varchar(50),
-id_categorias int, foreign key (id_categorias) references categorias(id_categorias),
-id_usuarios int, foreign key (id_usuarios) references usuarios(id_usuarios)
+CREATE TABLE movimientos (
+    id_movimientos INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(15) NOT NULL,
+    monto DECIMAL(10,2),
+    descripcion VARCHAR(50),
+    id_categorias INT,
+    id_usuarios INT,
+
+    CONSTRAINT movimientos_tipo
+    CHECK (tipo IN ('gasto', 'ingreso')),
+
+    CONSTRAINT fk_movimientos_categorias
+    FOREIGN KEY (id_categorias)
+    REFERENCES categorias(id_categorias),
+
+    CONSTRAINT fk_movimientos_usuarios
+    FOREIGN KEY (id_usuarios)
+    REFERENCES usuarios(id_usuarios)
 );
 
-INSERT INTO movimientos 
+INSERT INTO movimientos
 (tipo, monto, descripcion, id_categorias, id_usuarios)
 VALUES
 ('gasto', 25000.00, 'Almuerzo', 1, 1),
@@ -73,7 +82,8 @@ VALUES
 ('gasto', 20000.00, 'Transporte taxi', 2, 6),
 ('gasto', 70000.00, 'Pago de servicios', 3, 7),
 ('gasto', 55000.00, 'Cine y comida', 4, 8);
-GO
 
-select * from movimientos;
+SELECT * FROM movimientos;
+```
+
 

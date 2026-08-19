@@ -1,0 +1,24 @@
+{
+  "name": "poligastos",
+  "version": "1.0.0",
+  "description": "Administracion de gastos personales",
+  "homepage": "https://github.com/davidProfe-git/prog2n-poligastos#readme",
+  "bugs": {
+    "url": "https://github.com/davidProfe-git/prog2n-poligastos/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidProfe-git/prog2n-poligastos.git"
+  },
+  "license": "ISC",
+  "author": "Tomas Garzon",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.23.3"
+  }
+}
