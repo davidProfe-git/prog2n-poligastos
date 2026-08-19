@@ -3,7 +3,7 @@
 ## 1. Configuración inicial
 
 ```bash
-git config --global user.name "Tu Nombre"
+git config --global user.name "T"
 git config --global user.email "correo@ejemplo.com"
 git config --list
 ```
