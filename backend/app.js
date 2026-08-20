@@ -1,10 +1,8 @@
 const express = require("express")
 const app = express()
+const router = require("./router/router")
 
-
-app.get("/prog2",(request, response)=>{
-    response.send("<h1>Hola clase de prog 2 quiero break</h1>")
-})
+app.use('/api',router)
 
 
 app.listen(4000,()=>{
