@@ -6,7 +6,7 @@ class GastosController{
 
         let movimientos = await gastos_Model.consultarGastos()
        res.json({
-        data:movimientos
+        data: movimientos
        }) 
 
     }
