@@ -1,6 +1,6 @@
 const db = require("../config/db")
 
-class Gastos{
+class GastosModel{
 
     static async consultarGastos (){
         let [resultados] = await db.query('SELECT * FROM movimientos') 
@@ -9,8 +9,8 @@ class Gastos{
     }
 
 }
-module.exports=Gastos
+module.exports=GastosModel
 
-
+    
 // const prueba = Gastos
 // prueba.consultarGastos()
