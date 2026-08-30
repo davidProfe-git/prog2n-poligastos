@@ -1,9 +1,9 @@
 const express = require("express")
 const app = express()
 const router = require("./router/router")
-const corst = 
+const cors = require("cors")
 
-app.use(cours())
+app.use(cors())
 app.use('/api',router)
 
 //app.get("/prog2",(request, response)=>{
