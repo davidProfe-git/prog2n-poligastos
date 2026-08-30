@@ -1,9 +1,9 @@
 const db = require("../config/db")
 
-class GastosModel{
+class GastosModel {
 
-    static async consultarGastos(){
-        let [resultados] = await db.query('SELECT * FROM movimiento') 
+    static async consultarGastos() {
+        let [resultados] = await db.query('SELECT * FROM gastos')
         //lo que retorna la consulta de sql es [datos] [metadatos] 
         return resultados
     }
