@@ -3,73 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poligastos - Control de Gastos Personal</title>
+    <title>PoliGastos - Control de Gastos</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Poligastos 💰</h1>
-        <p>Lleva el control de tus finanzas personales</p>
-    </header>
 
-    <main class="container">
-        <!-- Formulario para agregar gastos -->
-        <section class="card">
-            <h2>Registrar Nuevo Gasto</h2>
-            <form id="form-gasto">
-                <div class="form-group">
-                    <label for="descripcion">Descripción</label>
-                    <input type="text" id="descripcion" placeholder="Ej: Compra de almuerzo" required>
+    <!-- Menú de Navegación (Oculto inicialmente hasta loguearse) -->
+    <nav id="navbar" class="hidden">
+        <div class="nav-brand">PoliGastos</div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="mostrarVista('dashboard')">Inicio</a></li>
+            <li><a href="#" onclick="mostrarVista('historial')">Historial</a></li>
+            <li><a href="#" onclick="mostrarVista('perfil')">Perfil</a></li>
+            <li><a href="#" onclick="cerrarSesion()" class="logout-btn">Salir</a></li>
+        </ul>
+    </nav>
+
+    <main id="app-container">
+        
+        <!-- VISTA 1: LOGIN / REGISTRO -->
+        <section id="vista-auth" class="vista activa">
+            <div class="auth-box">
+                <h2>Bienvenido a PoliGastos</h2>
+                <div class="tabs">
+                    <button onclick="cambiarTabAuth('login')" class="activa" id="tab-login">Ingresar</button>
+                    <button onclick="cambiarTabAuth('registro')" id="tab-registro">Registrarse</button>
                 </div>
 
-                <div class="form-group">
-                    <label for="monto">Monto ($)</label>
-                    <input type="number" id="monto" placeholder="Ej: 25000" step="0.01" required>
-                </div>
+                <form id="form-auth" onsubmit="iniciarSesion(event)">
+                    <input type="text" id="nombre-registro" placeholder="Nombre completo" class="hidden">
+                    <input type="email" placeholder="Correo Electrónico" required>
+                    <input type="password" placeholder="Contraseña" required>
+                    <button type="submit" class="btn-primary" id="btn-auth">Entrar</button>
+                </form>
+            </div>
+        </section>
 
-                <div class="form-group">
-                    <label for="categoria">Categoría</label>
-                    <select id="categoria" required>
-                        <option value="">Seleccione una categoría</option>
-                        <option value="Alimentación">Alimentación</option>
-                        <option value="Transporte">Transporte</option>
-                        <option value="Servicios">Servicios Públicos</option>
-                        <option value="Entretenimiento">Entretenimiento</option>
-                        <option value="Educación">Educación</option>
+        <!-- VISTA 2: PRINCIPAL (DASHBOARD) -->
+        <section id="vista-dashboard" class="vista hidden">
+            <h2>Panel Principal</h2>
+            <div class="tarjetas-resumen">
+                <div class="tarjeta ingreso">
+                    <h3>Ingresos</h3>
+                    <p id="total-ingresos">$0.00</p>
+                </div>
+                <div class="tarjeta egreso">
+                    <h3>Egresos</h3>
+                    <p id="total-egresos">$0.00</p>
+                </div>
+            </div>
+
+            <div class="formulario-transaccion">
+                <h3>Registrar Movimiento</h3>
+                <form onsubmit="registrarMovimiento(event)">
+                    <select id="tipo-mov" onchange="manejarCategorias()" required>
+                        <option value="">Seleccione el tipo...</option>
+                        <option value="ingreso">Ingreso</option>
+                        <option value="egreso">Egreso</option>
                     </select>
-                </div>
+                    
+                    <select id="categoria-mov" class="hidden">
+                        <option value="">Seleccione la categoría...</option>
+                        <option value="1">Alimentación</option>
+                        <option value="2">Transporte</option>
+                        <option value="3">Servicios Públicos</option>
+                        <option value="4">Entretenimiento</option>
+                        <option value="5">Educación</option>
+                    </select>
 
-                <button type="submit" class="btn">Guardar Gasto</button>
-            </form>
+                    <input type="number" step="0.01" id="monto-mov" placeholder="Monto ($)" required>
+                    <input type="text" id="desc-mov" placeholder="Descripción breve" required>
+                    <button type="submit" class="btn-success">Guardar</button>
+                </form>
+            </div>
         </section>
 
-        <!-- Listado de gastos -->
-        <section class="card">
-            <h2>Historial de Gastos</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Descripción</th>
-                        <th>Categoría</th>
-                        <th>Monto</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-gastos">
-                    <tr>
-                        <td>Almuerzo ejecutivo</td>
-                        <td>Alimentación</td>
-                        <td>$45.000,00</td>
-                    </tr>
-                    <tr>
-                        <td>Pasaje de transporte</td>
-                        <td>Transporte</td>
-                        <td>$12.000,00</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- VISTA 3: HISTORIAL -->
+        <section id="vista-historial" class="vista hidden">
+            <h2>Historial de Movimientos</h2>
+            <div class="filtros">
+                <label>Ver:</label>
+                <select id="filtro-vista" onchange="cargarHistorial()">
+                    <option value="general">Vista General</option>
+                    <option value="ingreso">Solo Ingresos</option>
+                    <option value="egreso">Solo Egresos</option>
+                </select>
+            </div>
+            
+            <div class="tabla-contenedor">
+                <table class="tabla-historial">
+                    <thead>
+                        <tr>
+                            <th>Fecha y Hora</th>
+                            <th>Tipo</th>
+                            <th>Categoría</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-historial">
+                        <!-- Los datos se cargarán aquí desde la base de datos -->
+                    </tbody>
+                </table>
+            </div>
         </section>
+
+        <!-- VISTA 4: PERFIL -->
+        <section id="vista-perfil" class="vista hidden">
+            <h2>Mi Perfil</h2>
+            <div class="info-perfil">
+                <p><strong>Nombre:</strong> Juan Gómez</p>
+                <p><strong>Correo:</strong> juan.gomez@correo.com</p>
+                <button class="btn-primary" onclick="alert('Función de edición en desarrollo')">Editar Perfil</button>
+            </div>
+        </section>
+
     </main>
 
-    <script src="../backend/app.js"></script>
+    <!-- LOGICA DE LA INTERFAZ Y CONEXIÓN AL BACKEND -->
+    <script>
+        // Cambiar entre vistas de la aplicación
+        function mostrarVista(vista) {
+            document.querySelectorAll('.vista').forEach(v => {
+                v.classList.remove('activa');
+                v.classList.add('hidden');
+            });
+            document.getElementById(`vista-${vista}`).classList.remove('hidden');
+            document.getElementById(`vista-${vista}`).classList.add('activa');
+
+            if(vista === 'historial') {
+                cargarHistorial();
+            }
+        }
+
+        // Cambiar entre Login y Registro
+        function cambiarTabAuth(tipo) {
+            const btnAuth = document.getElementById('btn-auth');
+            const inputNombre = document.getElementById('nombre-registro');
+            document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('activa'));
+            
+            if(tipo === 'login') {
+                document.getElementById('tab-login').classList.add('activa');
+                inputNombre.classList.add('hidden');
+                inputNombre.required = false;
+                btnAuth.textContent = 'Entrar';
+            } else {
+                document.getElementById('tab-registro').classList.add('activa');
+                inputNombre.classList.remove('hidden');
+                inputNombre.required = true;
+                btnAuth.textContent = 'Crear Cuenta';
+            }
+        }
+
+        // Iniciar sesión conectándose a la base de datos
+        async function iniciarSesion(e) {
+            e.preventDefault(); // Evita que la página se recargue
+            
+            // Obtener los valores que el usuario escribió en los inputs
+            const inputs = e.target.querySelectorAll('input');
+            const correo = inputs[1].value; 
+            const password = inputs[2].value;
+
+            try {
+                // Hacer la petición al backend
+                const respuesta = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ correo, password })
+                });
+                
+                const data = await respuesta.json();
+
+                if (data.exito) {
+                    // Si los datos son correctos, guardamos la sesión en el navegador
+                    localStorage.setItem('usuarioActivo', JSON.stringify(data.usuario));
+                    
+                    // Actualizamos la vista del Perfil con los datos reales
+                    const infoPerfil = document.querySelector('#vista-perfil .info-perfil');
+                    infoPerfil.innerHTML = `
+                        <p><strong>Nombre:</strong> ${data.usuario.nombre}</p>
+                        <p><strong>Correo:</strong> ${data.usuario.correo}</p>
+                        <button class="btn-primary" onclick="alert('Función de edición en desarrollo')">Editar Perfil</button>
+                    `;
+
+                    // Mostramos la aplicación
+                    document.getElementById('navbar').classList.remove('hidden');
+                    mostrarVista('dashboard');
+               } else {
+    // Si hay un error, muestra el mensaje amigable o el error real de SQL
+    alert(data.mensaje || data.error || "Error desconocido al iniciar sesión");
+}
+            } catch (error) {
+                console.error("Error al intentar iniciar sesión:", error);
+                alert("Hubo un error al comunicarse con el servidor.");
+            }
+        }
+
+        // Cerrar sesión
+        function cerrarSesion() {
+            document.getElementById('navbar').classList.add('hidden');
+            mostrarVista('auth');
+        }
+
+        // Mostrar categorías solo si es egreso
+        function manejarCategorias() {
+            const tipo = document.getElementById('tipo-mov').value;
+            const selectCat = document.getElementById('categoria-mov');
+            
+            if(tipo === 'egreso') {
+                selectCat.classList.remove('hidden');
+                selectCat.required = true;
+            } else {
+                selectCat.classList.add('hidden');
+                selectCat.required = false;
+            }
+        }
+
+      // Registrar ingreso o egreso directamente en MySQL vía Backend
+        async function registrarMovimiento(e) {
+            e.preventDefault();
+
+            // Recuperamos el usuario activo que se guardó al hacer login
+            const usuarioGuardado = JSON.parse(localStorage.getItem('usuarioActivo')) || { id_usuario: 1 };
+            
+            const tipo = document.getElementById('tipo-mov').value;
+            const monto = document.getElementById('monto-mov').value;
+            const descripcion = document.getElementById('desc-mov').value;
+            
+            // Si es ingreso, categoría por defecto 6 (Salario). Si es egreso, la que el usuario escogió.
+            const id_categoria = tipo === 'ingreso' ? 6 : document.getElementById('categoria-mov').value;
+
+            try {
+                const respuesta = await fetch('/api/transacciones', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id_usuario: usuarioGuardado.id_usuario,
+                        id_categoria,
+                        tipo,
+                        monto,
+                        descripcion
+                    })
+                });
+
+                const data = await respuesta.json();
+
+                if (respuesta.ok) {
+                    alert("¡Movimiento registrado y guardado en la base de datos con éxito!");
+                    e.target.reset();
+                    manejarCategorias();
+                    // Opcional: recargar el historial automáticamente si estás ahí
+                    if(typeof cargarHistorial === 'function') cargarHistorial();
+                } else {
+                    alert("Error al guardar: " + (data.error || "Error desconocido"));
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                alert("No se pudo conectar con el servidor para guardar el movimiento.");
+            }
+        }
+
+        // Obtener historial del usuario activo desde MySQL
+        async function cargarHistorial() {
+            try {
+                // Recuperamos el usuario activo del navegador
+                const usuarioGuardado = JSON.parse(localStorage.getItem('usuarioActivo')) || { id_usuario: 1 };
+                
+                // Llamamos a la API enviando el ID del usuario logueado
+                const respuesta = await fetch(`/api/historial/${usuarioGuardado.id_usuario}`);
+                const data = await respuesta.json();
+                
+                const filtro = document.getElementById('filtro-vista').value;
+                const cuerpoTabla = document.getElementById('cuerpo-historial');
+                cuerpoTabla.innerHTML = '';
+
+                let ingresos = 0;
+                let egresos = 0;
+
+                data.transacciones.forEach(t => {
+                    if(t.tipo === 'ingreso') ingresos += parseFloat(t.monto);
+                    if(t.tipo === 'egreso') egresos += parseFloat(t.monto);
+
+                    if(filtro !== 'general' && t.tipo !== filtro) return;
+
+                    const fechaObj = new Date(t.fecha_hora);
+                    const fechaFormateada = fechaObj.toLocaleDateString() + ' ' + fechaObj.toLocaleTimeString();
+                    const montoFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(t.monto);
+                    
+                    const claseTipo = t.tipo === 'egreso' ? 'texto-rojo' : 'texto-verde';
+                    const signo = t.tipo === 'egreso' ? '-' : '+';
+
+                    const fila = `
+                        <tr>
+                            <td>${fechaFormateada}</td>
+                            <td class="${claseTipo}">${t.tipo.toUpperCase()}</td>
+                            <td>${t.nombre_categoria || 'N/A'}</td>
+                            <td class="${claseTipo}">${signo}${montoFormateado}</td>
+                        </tr>
+                    `;
+                    cuerpoTabla.innerHTML += fila;
+                });
+
+                document.getElementById('total-ingresos').textContent = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(ingresos);
+                document.getElementById('total-egresos').textContent = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(egresos);
+
+            } catch (error) {
+                console.error("Error cargando el historial:", error);
+                document.getElementById('cuerpo-historial').innerHTML = '<tr><td colspan="4">Error al conectar con la base de datos.</td></tr>';
+            }
+        }
+    </script>
 </body>
 </html>
