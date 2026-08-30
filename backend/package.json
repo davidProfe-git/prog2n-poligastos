@@ -1,7 +1,7 @@
 {
-  "name": "poligastos",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "administracion de finanzas ",
+  "description": "administracion de finanzas",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,13 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/davidProfe-git/prog2n-poligastos.git"
   },
-  "author": "Allan H",
+  "author": "david rugeles",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/davidProfe-git/prog2n-poligastos/issues"
-  },
-  "homepage": "https://github.com/davidProfe-git/prog2n-poligastos#readme",
+  "type": "commonjs",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mysql2": "^3.23.3"
   }
 }
