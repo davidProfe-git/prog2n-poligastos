@@ -1,25 +1,15 @@
-// Archivo principal del backend.
-// Proyecto académico de nivel inicial.
-
-const express = require('express');
-
+const express = require("express");
+const cors = require("cors");
 const app = express();
-const PORT = 3000;
 
+// Cambiamos "router" por "routes" para que coincida con el nombre de tu carpeta:
+const router = require("./routes/router"); 
+
+app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json({ mensaje: 'API de Tienda de Videojuegos funcionando correctamente' });
-});
+app.use('/api', router);
 
-app.get('/api/productos', (req, res) => {
-    res.json([
-        { id: 1, nombre: 'FIFA 25', precio: 180000 },
-        { id: 2, nombre: 'Mario Kart 8', precio: 160000 },
-        { id: 3, nombre: 'Minecraft', precio: 120000 }
-    ]);
-});
-
-app.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+app.listen(4000, () => {
+    console.log("Servidor corriendo en http://localhost:4000");
 });

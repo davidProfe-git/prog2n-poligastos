@@ -1,35 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de Videojuegos</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin gastos</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Tienda de Videojuegos</h1>
-        <p>Desarrollo de Software</p>
-    </header>
+  <div class="container">
+    <h1>Admin gastos</h1>
 
-    <main>
-        <section class="presentacion">
-            <h2>Bienvenido</h2>
-            <p>Esta aplicación permite organizar productos, clientes y ventas de una tienda de videojuegos.</p>
-        </section>
+    <div class="form-container">
+      <div class="input-group">
+        <label for="nombre">$ Ingresos / Gastos</label>
+        <input type="text" id="nombre" placeholder="Nombre (ej. Salario, Mercado)">
+      </div>
 
-        <section class="productos">
-            <h2>Productos de ejemplo</h2>
-            <div class="tarjetas">
-                <article><h3>FIFA 25</h3><p>$180.000</p></article>
-                <article><h3>Minecraft</h3><p>$120.000</p></article>
-                <article><h3>God of War</h3><p>$190.000</p></article>
-            </div>
-        </section>
-    </main>
+      <div class="input-group">
+        <input type="number" id="valor" placeholder="Monto ($)">
+      </div>
 
-    <footer>
-        <p>Proyecto académico</p>
-    </footer>
+      <div class="input-group">
+        <select id="categoria">
+          <option value="1">Alimentación</option>
+          <option value="2">Transporte</option>
+          <option value="3">Vivienda</option>
+          <option value="4">Entretenimiento</option>
+          <option value="5">Educación</option>
+          <option value="6">Salud</option>
+          <option value="7">Servicios</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <input type="date" id="fecha">
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-ingresos">Ingresos</button>
+        <button type="button" class="btn btn-gastos">gastos</button>
+      </div>
+    </div>
+
+    <h2>Registros recientes</h2>
+    <div id="lista-gastos" class="registros-list">
+      <p>Cargando registros...</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const contenedor = document.getElementById('lista-gastos');
+      try {
+        const res = await fetch('http://localhost:4000/api/gastos');
+        const responseData = await res.json();
+
+        // Extraer los datos recibidos del backend
+        const gastos = responseData.data;
+
+        if (!gastos || gastos.length === 0) {
+          contenedor.innerHTML = '<p style="color: gray;">No hay registros en la base de datos.</p>';
+          return;
+        }
+
+        contenedor.innerHTML = '';
+        gastos.forEach(gasto => {
+          const item = document.createElement('div');
+          item.className = 'registro-item';
+          item.innerHTML = `
+            <span>${gasto.nombre}</span>
+            <span>${parseFloat(gasto.valor).toLocaleString()}</span>
+          `;
+          contenedor.appendChild(item);
+        });
+      } catch (error) {
+        console.error('Error al conectar con la API:', error);
+        contenedor.innerHTML = '<p style="color: red;">Error al conectar con el servidor (Verifica node app.js)</p>';
+      }
+    });
+  </script>
 </body>
 </html>
