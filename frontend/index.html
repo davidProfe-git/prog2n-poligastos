@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Mis Finanzas — Administrador de Gastos</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">  <link rel="stylesheet" href="css/style.css">
 </head><body>  <div class="app-contenedor"><!-- Barra lateral -->
 <aside class="barra-lateral">
 
@@ -174,13 +174,10 @@
             class="entrada"
           >
 
-            <option value="hogar">Hogar</option>
-            <option value="transporte">Transporte</option>
-            <option value="alimentacion">Alimentación</option>
-            <option value="salud">Salud</option>
-            <option value="ocio">Ocio</option>
-            <option value="otros">Otros</option>
-
+           <option value="transporte">Transporte</option>
+           <option value="ropa">Ropa</option>
+           <option value="alimentacion">Alimentos</option>
+           <option value="servicios">Servicios</option>
           </select>
 
         </div>
@@ -236,140 +233,101 @@
 
       </div>
 
-
-      <ul class="lista-movimientos">
-
-        <li class="movimiento">
-
-          <span class="movimiento-icono movimiento-icono--hogar">
-            ⌂
-          </span>
-
-          <div class="movimiento-info">
-
-            <p class="movimiento-descripcion">
-              Arriendo apartamento
-            </p>
-
-            <p class="movimiento-categoria">
-              Hogar · 25 jul. 2026
-            </p>
-
-          </div>
-
-          <span class="movimiento-monto movimiento-monto--negativo">
-            - $ 900.000
-          </span>
-
-        </li>
-
-
-        <li class="movimiento">
-
-          <span class="movimiento-icono movimiento-icono--alimentacion">
-            ☘️
-          </span>
-
-          <div class="movimiento-info">
-
-            <p class="movimiento-descripcion">
-              Mercado quincenal
-            </p>
-
-            <p class="movimiento-categoria">
-              Alimentación · 22 jul. 2026
-            </p>
-
-          </div>
-
-          <span class="movimiento-monto movimiento-monto--negativo">
-            - $ 320.000
-          </span>
-
-        </li>
-
-
-        <li class="movimiento">
-
-          <span class="movimiento-icono movimiento-icono--transporte">
-            ⛽
-          </span>
-
-          <div class="movimiento-info">
-
-            <p class="movimiento-descripcion">
-              Gasolina
-            </p>
-
-            <p class="movimiento-categoria">
-              Transporte · 20 jul. 2026
-            </p>
-
-          </div>
-
-          <span class="movimiento-monto movimiento-monto--negativo">
-            - $ 150.000
-          </span>
-
-        </li>
-
-
-        <li class="movimiento">
-
-          <span class="movimiento-icono movimiento-icono--ingreso">
-            ↑
-          </span>
-
-          <div class="movimiento-info">
-
-            <p class="movimiento-descripcion">
-              Pago nómina
-            </p>
-
-            <p class="movimiento-categoria">
-              Ingreso · 15 jul. 2026
-            </p>
-
-          </div>
-
-          <span class="movimiento-monto movimiento-monto--positivo">
-            + $ 4.200.000
-          </span>
-
-        </li>
-
-
-        <li class="movimiento">
-
-          <span class="movimiento-icono movimiento-icono--ocio">
-            ♪
-          </span>
-
-          <div class="movimiento-info">
-
-            <p class="movimiento-descripcion">
-              Suscripción música
-            </p>
-
-            <p class="movimiento-categoria">
-              Ocio · 10 jul. 2026
-            </p>
-
-          </div>
-
-          <span class="movimiento-monto movimiento-monto--negativo">
-            - $ 25.000
-          </span>
-
-        </li>
-
-      </ul>
-
+<ul class="lista-movimientos" id="lista-movimientos">
+</ul>
     </section>
 
   </div>
 
 </main>
 
-  </div></body>
+  </div>
+
+<script>
+const formulario = document.getElementById('formulario-gasto');
+
+formulario.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const descripcion = document.getElementById('campo-descripcion').value;
+    const monto = document.getElementById('campo-monto').value;
+    const fecha = document.getElementById('campo-fecha').value;
+    const categoria = document.getElementById('campo-categoria').value;
+
+    try {
+        const respuesta = await fetch('http://localhost:4000/api/movimientos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                descripcion,
+                monto,
+                fecha,
+                categoria
+            })
+        });
+
+        const resultado = await respuesta.json();
+
+        if (respuesta.ok) {
+            alert('Gasto guardado correctamente');
+            formulario.reset();
+            cargarMovimientos();
+        } else {
+            alert(resultado.error);
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert('No se pudo conectar con el servidor');
+    }
+});
+async function cargarMovimientos() {
+    try {
+        const respuesta = await fetch('http://localhost:4000/api/movimientos');
+        const resultado = await respuesta.json();
+
+        const lista = document.getElementById('lista-movimientos');
+
+        lista.innerHTML = '';
+
+        resultado.data.forEach(movimiento => {
+            const item = document.createElement('li');
+
+            item.className = 'movimiento';
+
+            const signo = movimiento.tipo === 'ingreso' ? '+' : '-';
+
+            item.innerHTML = `
+                <span class="movimiento-icono">
+                    $
+                </span>
+
+                <div class="movimiento-info">
+                    <p class="movimiento-descripcion">
+                        ${movimiento.descripcion}
+                    </p>
+
+                    <p class="movimiento-categoria">
+                        ${movimiento.tipo} · ${movimiento.fecha}
+                    </p>
+                </div>
+
+                <span class="movimiento-monto ${movimiento.tipo === 'ingreso' ? 'movimiento-monto--positivo' : 'movimiento-monto--negativo'}">
+                    ${signo} $ ${Number(movimiento.monto).toLocaleString('es-CO')}
+                </span>
+            `;
+
+            lista.appendChild(item);
+        });
+
+    } catch (error) {
+        console.error('Error al cargar movimientos:', error);
+    }
+}
+cargarMovimientos();
+</script>
+
+</body>
 </html>
