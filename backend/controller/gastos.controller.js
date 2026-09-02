@@ -11,6 +11,15 @@ class GastosController{
 
     }
 
+    static async consultarCaregorias(req,res){
+
+        let categorias = await gastos_Model.consultarCategorias()
+       res.json({
+        data: categorias
+       }) 
+
+    }
+
 }
 
 module.exports = GastosController
