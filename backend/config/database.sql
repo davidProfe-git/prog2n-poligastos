@@ -61,6 +61,7 @@ CREATE TABLE gastos (
   medio_pago_id  INT           NOT NULL,
   concepto       VARCHAR(120)  NOT NULL,
   monto          DECIMAL(12,2) NOT NULL,
+  tipo           ENUM('ingreso','gasto') NOT NULL DEFAULT 'gasto',
   fecha          DATE          NOT NULL,
   hora           TIME          NOT NULL DEFAULT '00:00:00',
   creado_en      TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
