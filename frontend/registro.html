@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin gastos</title>
+    <link rel="stylesheet" href="css/registro.css">
+</head>
+
+<body>
+
+    <main class="contenedor">
+
+        <h1>Admin gastos</h1>
+
+        <div class="campo">
+            <label for="monto">Monto</label>
+            <input type="number" id="monto" placeholder="Ingrese el monto">
+        </div>
+
+        <div class="campo">
+            <label for="categoria">Categoría</label>
+            <select id="categoria">
+                <option value="">Seleccione una categoría</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="descripcion">Descripción</label>
+            <input type="text" id="descripcion" placeholder="Ingrese una descripción">
+        </div>
+
+        <div class="campo">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha">
+        </div>
+
+        <div class="botones">
+            <button type="button" id="btn-ingresos" class="ingresos">
+                Ingresos
+            </button>
+
+            <button type="button" id="btn-gastos" class="gastos">
+                Gastos
+            </button>
+        </div>
+
+        <button type="button" id="btn-registrar" class="registrar">
+            Registrar
+        </button>
+
+        <h2>Registros recientes</h2>
+
+        <div id="lista-movimientos"></div>
+
+    </main>
+
+    <script src="js/registro.js"></script>
+
+</body>
+
+</html>
