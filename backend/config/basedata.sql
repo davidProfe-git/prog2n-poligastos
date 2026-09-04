@@ -26,6 +26,8 @@ CREATE TABLE gastos (
 ) ENGINE=InnoDB;
 
 
+ALTER TABLE gastos ADD COLUMN tipo VARCHAR(10) NOT NULL DEFAULT 'gasto';
+
 INSERT INTO usuarios (nombre, email) VALUES
 ('Miguel Ángel', 'miguel@example.com'),
 ('Laura Gómez', 'laura@example.com');
@@ -48,3 +50,8 @@ INSERT INTO gastos (monto, descripcion, fecha_gasto, id_usuario, id_categoria) V
 (62000.00, 'Pago de servicio de energía eléctrica', '2026-08-08', 2, 3),
 (42000.00, 'Entradas de cine y combos', '2026-08-08', 2, 4),
 (95000.00, 'Compra de libro técnico de bases de datos', '2026-08-09', 1, 5);
+
+INSERT into gastos
+VALUES("Miguel",1,55000.00,"fotocard",2026-08-01")
+
+SELECT * gastos
