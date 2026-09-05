@@ -1,15 +1,25 @@
-const express = require("express");
-const cors = require("cors");
-const app = express();
+const express = require('express');
+const path = require('path');
+const cors = require('cors');
+const router = require('./routes/router');
 
-// Cambiamos "router" por "routes" para que coincida con el nombre de tu carpeta:
-const router = require("./routes/router"); 
+const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+// Servir estáticos desde la carpeta frontend
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Entregar index.html en la raíz
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+// Rutas API
 app.use('/api', router);
 
-app.listen(4000, () => {
-    console.log("Servidor corriendo en http://localhost:4000");
+const PORT = 4000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

@@ -47,37 +47,106 @@
       <p>Cargando registros...</p>
     </div>
   </div>
+<script>
+  const API_URL = 'http://localhost:4000/api/gastos';
 
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const contenedor = document.getElementById('lista-gastos');
-      try {
-        const res = await fetch('http://localhost:4000/api/gastos');
-        const responseData = await res.json();
+  document.addEventListener("DOMContentLoaded", () => {
+    cargarRegistros();
 
-        // Extraer los datos recibidos del backend
-        const gastos = responseData.data;
+    // Eventos para capturar y guardar según el botón presionado
+    document.querySelector('.btn-ingresos').addEventListener('click', () => guardarRegistro('ingreso'));
+    document.querySelector('.btn-gastos').addEventListener('click', () => guardarRegistro('gasto'));
+  });
 
-        if (!gastos || gastos.length === 0) {
-          contenedor.innerHTML = '<p style="color: gray;">No hay registros en la base de datos.</p>';
-          return;
-        }
+  // 1. Cargar y renderizar la lista con bordes verde/rojo
+  async function cargarRegistros() {
+    const contenedor = document.getElementById('lista-gastos');
+    try {
+      const res = await fetch(API_URL);
+      const responseData = await res.json();
+      const gastos = responseData.data || responseData;
 
-        contenedor.innerHTML = '';
-        gastos.forEach(gasto => {
-          const item = document.createElement('div');
-          item.className = 'registro-item';
-          item.innerHTML = `
-            <span>${gasto.nombre}</span>
-            <span>${parseFloat(gasto.valor).toLocaleString()}</span>
-          `;
-          contenedor.appendChild(item);
-        });
-      } catch (error) {
-        console.error('Error al conectar con la API:', error);
-        contenedor.innerHTML = '<p style="color: red;">Error al conectar con el servidor (Verifica node app.js)</p>';
+      if (!gastos || gastos.length === 0) {
+        contenedor.innerHTML = '<p style="color: gray;">No hay registros en la base de datos.</p>';
+        return;
       }
-    });
-  </script>
+
+      contenedor.innerHTML = '';
+      gastos.forEach(gasto => {
+        const item = document.createElement('div');
+        item.className = 'registro-item';
+
+        // Diferenciación visual: verde para ingreso, rojo para gasto
+        const esIngreso = gasto.tipo === 'ingreso';
+        const colorBorde = esIngreso ? '#28a745' : '#dc3545';
+        const colorTexto = esIngreso ? '#28a745' : '#dc3545';
+
+        item.style.borderLeft = `6px solid ${colorBorde}`;
+        item.style.padding = '10px';
+        item.style.margin = '8px 0';
+        item.style.display = 'flex';
+        item.style.justifyContent = 'space-between';
+        item.style.alignItems = 'center';
+
+        item.innerHTML = `
+          <span><strong>${gasto.nombre}</strong></span>
+          <span style="color: ${colorTexto}; font-weight: bold;">$ ${parseFloat(gasto.valor).toLocaleString()}</span>
+          <div>
+            <button type="button">Editar</button>
+            <button type="button">Eliminar</button>
+          </div>
+        `;
+        contenedor.appendChild(item);
+      });
+    } catch (error) {
+      console.error('Error al conectar con la API:', error);
+      contenedor.innerHTML = '<p style="color: red;">Error al conectar con el servidor</p>';
+    }
+  }
+
+  // 2. Capturar valores del formulario y enviar petición POST (Create)
+  async function guardarRegistro(tipoRegistro) {
+    const nombre = document.getElementById('nombre').value;
+    const valor = document.getElementById('valor').value;
+    const id_categoria = document.getElementById('categoria').value;
+    const fecha = document.getElementById('fecha').value;
+
+    if (!nombre || !valor || !fecha) {
+      alert("Por favor completa el nombre, valor y la fecha.");
+      return;
+    }
+
+    const payload = {
+      nombre,
+      valor: parseFloat(valor),
+      id_categoria: parseInt(id_categoria),
+      fecha,
+      tipo: tipoRegistro
+    };
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        // Limpiar campos del formulario
+        document.getElementById('nombre').value = '';
+        document.getElementById('valor').value = '';
+        document.getElementById('fecha').value = '';
+        
+        // Recargar la lista automáticamente
+        cargarRegistros();
+      } else {
+        alert("Error al guardar el registro en la base de datos.");
+      }
+    } catch (error) {
+      console.error("Error al enviar formulario:", error);
+    }
+  }
+</script>
+  
 </body>
 </html>
