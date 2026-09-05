@@ -5,7 +5,7 @@ const pool = base_de_datos.createPool({
     user: 'root',
     password: '',
     database: 'poligastos',
-    port:'3306'
+    port:'3307'
 }) 
 
 module.exports = pool.promise()
