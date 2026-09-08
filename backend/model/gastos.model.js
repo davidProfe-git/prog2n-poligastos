@@ -8,6 +8,14 @@ class GastosModel{
         return resultados
     }
 
+      static async consultarCategorias(){
+        let [resultados] = await db.query('SELECT * FROM categoria') 
+        //lo que retorna la consulta de sql es [datos] [metadatos] 
+        return resultados
+    }
+
+
+
 }
 
 module.exports = GastosModel
