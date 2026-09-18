@@ -44,11 +44,11 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// 2. Endpoint de Historial filtrado por usuario
+// 2. Endpoint de Historial filtrado por usuario (Incluye ID para la eliminación)
 app.get('/api/historial/:id_usuario', (req, res) => {
     const { id_usuario } = req.params;
     const query = `
-        SELECT t.fecha_hora, t.tipo, c.nombre_categoria, t.monto, t.descripcion 
+        SELECT t.id_transaccion, t.fecha_hora, t.tipo, c.nombre_categoria, t.monto, t.descripcion 
         FROM transacciones t
         JOIN categorias c ON t.id_categoria = c.id_categoria
         WHERE t.id_usuario = ?
@@ -72,6 +72,17 @@ app.post('/api/transacciones', (req, res) => {
     db.query(query, [id_usuario || 1, id_categoria || 6, tipo, monto, descripcion], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ mensaje: 'Transacción guardada exitosamente en la base de datos' });
+    });
+});
+
+// 4. Endpoint para eliminar una transacción por su ID
+app.delete('/api/transacciones/:id', (req, res) => {
+    const { id } = req.params;
+    const query = 'DELETE FROM transacciones WHERE id_transaccion = ?';
+    
+    db.query(query, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ mensaje: 'Transacción eliminada exitosamente' });
     });
 });
 

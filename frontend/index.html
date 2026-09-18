@@ -98,6 +98,7 @@
                             <th>Tipo</th>
                             <th>Categoría</th>
                             <th>Monto</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="cuerpo-historial">
@@ -156,15 +157,12 @@
 
         // Iniciar sesión conectándose a la base de datos
         async function iniciarSesion(e) {
-            e.preventDefault(); // Evita que la página se recargue
-            
-            // Obtener los valores que el usuario escribió en los inputs
+            e.preventDefault();
             const inputs = e.target.querySelectorAll('input');
             const correo = inputs[1].value; 
             const password = inputs[2].value;
 
             try {
-                // Hacer la petición al backend
                 const respuesta = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -174,10 +172,8 @@
                 const data = await respuesta.json();
 
                 if (data.exito) {
-                    // Si los datos son correctos, guardamos la sesión en el navegador
                     localStorage.setItem('usuarioActivo', JSON.stringify(data.usuario));
                     
-                    // Actualizamos la vista del Perfil con los datos reales
                     const infoPerfil = document.querySelector('#vista-perfil .info-perfil');
                     infoPerfil.innerHTML = `
                         <p><strong>Nombre:</strong> ${data.usuario.nombre}</p>
@@ -185,13 +181,11 @@
                         <button class="btn-primary" onclick="alert('Función de edición en desarrollo')">Editar Perfil</button>
                     `;
 
-                    // Mostramos la aplicación
                     document.getElementById('navbar').classList.remove('hidden');
                     mostrarVista('dashboard');
-               } else {
-    // Si hay un error, muestra el mensaje amigable o el error real de SQL
-    alert(data.mensaje || data.error || "Error desconocido al iniciar sesión");
-}
+                } else {
+                    alert(data.mensaje || data.error || "Error desconocido al iniciar sesión");
+                }
             } catch (error) {
                 console.error("Error al intentar iniciar sesión:", error);
                 alert("Hubo un error al comunicarse con el servidor.");
@@ -218,18 +212,14 @@
             }
         }
 
-      // Registrar ingreso o egreso directamente en MySQL vía Backend
+        // Registrar movimiento
         async function registrarMovimiento(e) {
             e.preventDefault();
-
-            // Recuperamos el usuario activo que se guardó al hacer login
             const usuarioGuardado = JSON.parse(localStorage.getItem('usuarioActivo')) || { id_usuario: 1 };
             
             const tipo = document.getElementById('tipo-mov').value;
             const monto = document.getElementById('monto-mov').value;
             const descripcion = document.getElementById('desc-mov').value;
-            
-            // Si es ingreso, categoría por defecto 6 (Salario). Si es egreso, la que el usuario escogió.
             const id_categoria = tipo === 'ingreso' ? 6 : document.getElementById('categoria-mov').value;
 
             try {
@@ -251,7 +241,6 @@
                     alert("¡Movimiento registrado y guardado en la base de datos con éxito!");
                     e.target.reset();
                     manejarCategorias();
-                    // Opcional: recargar el historial automáticamente si estás ahí
                     if(typeof cargarHistorial === 'function') cargarHistorial();
                 } else {
                     alert("Error al guardar: " + (data.error || "Error desconocido"));
@@ -262,13 +251,10 @@
             }
         }
 
-        // Obtener historial del usuario activo desde MySQL
+        // Obtener historial del usuario activo
         async function cargarHistorial() {
             try {
-                // Recuperamos el usuario activo del navegador
                 const usuarioGuardado = JSON.parse(localStorage.getItem('usuarioActivo')) || { id_usuario: 1 };
-                
-                // Llamamos a la API enviando el ID del usuario logueado
                 const respuesta = await fetch(`/api/historial/${usuarioGuardado.id_usuario}`);
                 const data = await respuesta.json();
                 
@@ -298,6 +284,9 @@
                             <td class="${claseTipo}">${t.tipo.toUpperCase()}</td>
                             <td>${t.nombre_categoria || 'N/A'}</td>
                             <td class="${claseTipo}">${signo}${montoFormateado}</td>
+                            <td>
+                                <button class="btn-eliminar" onclick="eliminarTransaccion(${t.id_transaccion})" style="background-color: #d9534f; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Eliminar</button>
+                            </td>
                         </tr>
                     `;
                     cuerpoTabla.innerHTML += fila;
@@ -308,7 +297,30 @@
 
             } catch (error) {
                 console.error("Error cargando el historial:", error);
-                document.getElementById('cuerpo-historial').innerHTML = '<tr><td colspan="4">Error al conectar con la base de datos.</td></tr>';
+                document.getElementById('cuerpo-historial').innerHTML = '<tr><td colspan="5">Error al conectar con la base de datos.</td></tr>';
+            }
+        }
+
+        // Eliminar transacción por ID
+        async function eliminarTransaccion(id_transaccion) {
+            if (!confirm("¿Estás seguro de que deseas eliminar este movimiento?")) return;
+
+            try {
+                const respuesta = await fetch(`/api/transacciones/${id_transaccion}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await respuesta.json();
+
+                if (respuesta.ok) {
+                    alert("Movimiento eliminado correctamente");
+                    cargarHistorial(); 
+                } else {
+                    alert("Error al eliminar: " + (data.error || "No se pudo procesar"));
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                alert("No se pudo conectar con el servidor para eliminar el registro.");
             }
         }
     </script>
